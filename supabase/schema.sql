@@ -36,7 +36,9 @@ create index if not exists players_status_idx on public.players (status);
 create index if not exists players_owner_idx on public.players (owner_id);
 
 create or replace function public.set_updated_at()
-returns trigger language plpgsql as $$
+returns trigger language plpgsql
+set search_path = public, pg_temp
+as $$
 begin
   new.updated_at = now();
   return new;

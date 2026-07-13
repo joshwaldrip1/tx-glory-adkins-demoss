@@ -28,3 +28,15 @@ create policy photos_owner_modify on storage.objects
         and (storage.foldername(name))[1] = p.id::text
     )
   );
+
+drop policy if exists photos_owner_delete on storage.objects;
+create policy photos_owner_delete on storage.objects
+  for delete to authenticated
+  using (
+    bucket_id = 'player-photos'
+    and exists (
+      select 1 from public.players p
+      where p.owner_id = auth.uid()
+        and (storage.foldername(name))[1] = p.id::text
+    )
+  );
