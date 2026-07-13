@@ -15,7 +15,11 @@ document.getElementById("login").addEventListener("click", async () => {
 
 document.getElementById("signup").addEventListener("click", async () => {
   msg.className = "notice"; msg.textContent = "Creating account…";
-  const { data, error } = await signUp(email.value.trim(), password.value);
+  // Land the confirmation link back on this login page (a real, existing page).
+  // supabase-js parses the token from the URL and the currentUser() check above
+  // then forwards a confirmed parent to the dashboard.
+  const redirectTo = location.origin + location.pathname;
+  const { data, error } = await signUp(email.value.trim(), password.value, redirectTo);
   if (error) {
     msg.className = "error";
     // Supabase's built-in email sender is rate-limited (a few/hour). When a batch

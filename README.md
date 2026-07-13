@@ -69,6 +69,17 @@ ones get blocked. Two ways to fix it (dashboard, no code change):
   SMTP Settings → plug in a provider (e.g. Resend or SendGrid). That raises the
   limit far beyond the built-in sender.
 
+**"Confirmation link opens a 404."** The link redirects to whatever is set in
+Authentication → **URL Configuration**, and this site lives on a GitHub Pages
+*subpath*. Set both to the subpath (not the bare `github.io` root, and not
+`localhost`):
+- **Site URL:** `https://joshwaldrip1.github.io/tx-glory-adkins-demoss/`
+- **Redirect URLs** (allowlist): add `https://joshwaldrip1.github.io/tx-glory-adkins-demoss/**`
+
+The signup code already passes the login page as the redirect target, but it
+only takes effect once that URL is on the Redirect URLs allowlist above.
+(Turning off email confirmation, per the first fix, sidesteps this entirely.)
+
 ## Privacy
 `assets/reference/` is git-ignored and must never be committed (contains
 minors' flyers). DOB and player contact are optional per-player.

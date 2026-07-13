@@ -81,7 +81,12 @@ export async function deleteGame(id) {
   if (error) throw error;
 }
 
-export const signUp = (email, password) => supabase.auth.signUp({ email, password });
+// emailRedirectTo controls where the confirmation-email link lands after Supabase
+// verifies the token. On GitHub Pages the site is served from a subpath, so we
+// pass the login page's full URL explicitly — otherwise Supabase falls back to
+// the project's "Site URL", and a misconfigured one sends parents to a 404.
+export const signUp = (email, password, emailRedirectTo) =>
+  supabase.auth.signUp({ email, password, options: emailRedirectTo ? { emailRedirectTo } : undefined });
 export const signIn = (email, password) => supabase.auth.signInWithPassword({ email, password });
 export const signOut = () => supabase.auth.signOut();
 export const currentUser = async () => (await supabase.auth.getUser()).data.user;
