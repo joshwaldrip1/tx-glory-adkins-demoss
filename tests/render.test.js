@@ -72,6 +72,11 @@ describe("profile", () => {
     expect(html).not.toContain("Innings Played");
     expect(html).not.toContain("Academic");
   });
+  it("omits the Player Stats section entirely when no stats are filled", () => {
+    const html = profile({ ...minimalInfielder, stats: {} }, BASE);
+    expect(html).not.toContain("Player Stats");
+    expect(html).not.toContain("stat-cards");
+  });
   it("drops non-http(s) links like javascript: and data:", () => {
     const html = profile({ ...pitcher, video_url: "javascript:alert(1)", profile_url: "data:text/html,x" }, BASE);
     expect(html).not.toContain("javascript:alert");

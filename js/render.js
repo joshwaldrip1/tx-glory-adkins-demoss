@@ -1,7 +1,9 @@
 import { text, photoUrl, youTubeEmbed } from "./format.js";
 import { STAT_GROUPS, slugStat } from "../data/stat-catalog.js";
 
-// Order the stat cards the way the team flyer does.
+// Preferred display order for the stat cards (flyer order). Any group NOT listed
+// here still renders — it's appended after these — so this is a sort hint, not an
+// allow-list, and adding a group to the catalog can never silently drop its card.
 const CARD_ORDER = ["batting", "fielding", "pitching", "catching", "innings"];
 
 export function esc(s) {
@@ -46,18 +48,13 @@ function listLine(label, items) {
   return `<div class="info-row"><span class="info-label">${esc(label)}</span><span class="info-value">${arr.map(esc).join(", ")}</span></div>`;
 }
 
-export function nameBlock(p) {
-  const num = text(p.jersey_number) ? `<span class="jersey">#${esc(p.jersey_number)}</span>` : "";
-  return `<div class="name-block">${num}<h1 class="player-name"><span class="fn">${esc(p.first_name)}</span> <span class="ln">${esc(p.last_name)}</span></h1><p class="classyear">Class of ${esc(p.grad_year)}</p></div>`;
-}
-
 // One stat card per group (only if it has data), in flyer order.
+// Iterates the catalog itself (single source of truth), sorted by CARD_ORDER.
 function statCards(p) {
   const stats = p.stats || {};
-  const byKey = Object.fromEntries(STAT_GROUPS.map((g) => [g.key, g]));
-  return CARD_ORDER
-    .map((key) => byKey[key])
-    .filter(Boolean)
+  const rank = (k) => { const i = CARD_ORDER.indexOf(k); return i < 0 ? 999 : i; };
+  return [...STAT_GROUPS]
+    .sort((a, b) => rank(a.key) - rank(b.key))
     .map((g) => {
       const vals = stats[g.key] || {};
       const tiles = g.stats
@@ -99,8 +96,7 @@ function academics(p) {
 }
 
 function interests(p) {
-  const a = p.academics || {};
-  const inner = listLine("Academic Interests", a.interests) + infoRow("Other Interests", (p.bio || {}).interests);
+  const inner = listLine("Academic Interests", (p.academics || {}).interests);
   if (!inner) return "";
   return `<section class="panel"><h2 class="panel-title">Interests</h2>${inner}</section>`;
 }
@@ -145,6 +141,8 @@ export function profile(p, baseUrl, teamLogo) {
   const about = text((p.bio || {}).about) ? `<p class="hero-sub">${esc(p.bio.about)}</p>` : "";
   const safeProfile = safeUrl(p.profile_url);
   const link = safeProfile ? `<a class="btn" href="${esc(safeProfile)}" target="_blank" rel="noopener">Full Stats Profile</a>` : "";
+  const cards = statCards(p);
+  const statsSection = cards ? `${ribbon("Player Stats")}<div class="stat-cards">${cards}</div>` : "";
 
   return `<article class="profile">
     <header class="hero">
@@ -161,8 +159,7 @@ export function profile(p, baseUrl, teamLogo) {
       <div class="photo-box"><img class="profile-photo" src="${esc(img)}" alt="${esc(p.first_name)} ${esc(p.last_name)}"></div>
     </div>
 
-    ${ribbon("Player Stats")}
-    <div class="stat-cards">${statCards(p)}</div>
+    ${statsSection}
 
     <div class="two-col">${academics(p)}${interests(p)}</div>
 
