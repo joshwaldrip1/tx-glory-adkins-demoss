@@ -1,4 +1,5 @@
 import { listMine, savePlayer, uploadPhoto, signOut, currentUser } from "./api.js";
+import { esc } from "./render.js";
 
 if (!(await currentUser())) location.href = "login.html";
 
@@ -13,9 +14,9 @@ async function refresh() {
   const players = await listMine();
   $("mine").innerHTML = players.length
     ? players.map((p) =>
-        `<div class="info-row"><span class="info-value">#${p.jersey_number ?? ""} ${p.first_name} ${p.last_name}
-         — <em>${p.status}</em></span>
-         <button class="btn" data-edit="${p.id}" style="margin-left:auto">Edit</button></div>`).join("")
+        `<div class="info-row"><span class="info-value">#${esc(p.jersey_number ?? "")} ${esc(p.first_name)} ${esc(p.last_name)}
+         — <em>${esc(p.status)}</em></span>
+         <button class="btn" data-edit="${esc(p.id)}" style="margin-left:auto">Edit</button></div>`).join("")
     : `<p class="notice">No players yet — add one below.</p>`;
   document.querySelectorAll("[data-edit]").forEach((b) =>
     b.addEventListener("click", () => loadInto(players.find((p) => p.id === b.dataset.edit))));
@@ -38,6 +39,8 @@ $("form").addEventListener("submit", async (e) => {
   e.preventDefault();
   msg.className = "notice"; msg.textContent = "Saving…";
   try {
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
     const positions = $("positions").value.split(",").map((s) => s.trim().toUpperCase()).filter(Boolean);
     const player = {
       ...( $("id").value ? { id: $("id").value } : {} ),
@@ -56,6 +59,7 @@ $("form").addEventListener("submit", async (e) => {
       guardian_phone: $("guardian_phone").value.trim(),
     };
     const saved = await savePlayer(player);
+    $("id").value = saved.id;
     const file = $("photo").files[0];
     if (file) {
       const path = await uploadPhoto(saved.id, file);
@@ -66,6 +70,9 @@ $("form").addEventListener("submit", async (e) => {
     await refresh();
   } catch (err) {
     msg.className = "error"; msg.textContent = err.message;
+  } finally {
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = false;
   }
 });
 
