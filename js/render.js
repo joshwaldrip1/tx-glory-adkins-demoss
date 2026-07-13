@@ -126,7 +126,7 @@ function academics(p) {
 }
 
 function interests(p) {
-  const inner = listLine("Academic Interests", (p.academics || {}).interests);
+  const inner = listLine("Academics/Interests", (p.academics || {}).interests);
   if (!inner) return "";
   return `<section class="panel">${ribbon("interests", "Interests")}${inner}</section>`;
 }
