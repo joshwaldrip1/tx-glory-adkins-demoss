@@ -137,7 +137,7 @@ export function profile(p, baseUrl, teamLogo) {
   const posPill = positions ? `<span class="pos-pill">${positions}</span>` : "";
   const cls = text(p.grad_year) ? `<span class="pos-meta">Class of ${esc(p.grad_year)}</span>` : "";
   const jersey = text(p.jersey_number) ? `<span class="jersey">#${esc(p.jersey_number)}</span>` : "";
-  const wordmark = `<span class="hero-wordmark">Glory</span>`;
+  const logo = teamLogo ? `<img class="hero-logo" src="${esc(teamLogo)}" alt="Glory">` : "";
   const about = text((p.bio || {}).about) ? `<p class="hero-sub">${esc(p.bio.about)}</p>` : "";
   const safeProfile = safeUrl(p.profile_url);
   const link = safeProfile ? `<a class="btn" href="${esc(safeProfile)}" target="_blank" rel="noopener">Full Stats Profile</a>` : "";
@@ -151,7 +151,7 @@ export function profile(p, baseUrl, teamLogo) {
         <div class="pos-row">${posPill}${cls}</div>
         ${about}
       </div>
-      <div class="hero-brand">${wordmark}${jersey}</div>
+      <div class="hero-brand">${logo}${jersey}</div>
     </header>
 
     <div class="info-photo">

@@ -12,5 +12,8 @@
     "jsdom": "^24.1.0",
     "qrcode": "^1.5.4",
     "vitest": "^2.0.0"
+  },
+  "dependencies": {
+    "pngjs": "^7.0.0"
   }
 }

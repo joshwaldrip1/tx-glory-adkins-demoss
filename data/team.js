@@ -4,7 +4,7 @@ export const TEAM = {
   shortName: "TX Glory Adkins",
   taglinePrimary: "Compete. Hustle. Glory.",
   taglineSecondary: "Built on Passion.",
-  logo: "assets/team/logo.png",
+  logo: "assets/team/glory-gold.png",
   coach: {
     name: "Billy DeMoss",
     email: "josh_waldrip@yahoo.com",
