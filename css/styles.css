@@ -144,6 +144,11 @@ a { color:var(--gold-hi); }
 .side-link { display:flex; align-items:center; gap:10px; background:linear-gradient(180deg,var(--panel),#0d0d0d); border:1px solid var(--gold); border-left:5px solid var(--gold); border-radius:10px; padding:12px 14px; color:var(--text); text-decoration:none; font-family:var(--display); font-weight:700; text-transform:uppercase; letter-spacing:1px; transition:transform .15s, background .15s; }
 .side-link:hover { transform:translateX(3px); background:linear-gradient(180deg,#1c1c1c,#0d0d0d); }
 .side-ico { font-size:1.15rem; }
+.side-ad { display:block; margin-top:14px; background:#fff; border:1px solid var(--gold); border-radius:12px; padding:12px 10px 10px; text-align:center; text-decoration:none; box-shadow:0 6px 18px rgba(0,0,0,.4); transition:transform .15s; }
+.side-ad:hover { transform:translateY(-2px); }
+.side-ad-tag { display:block; font-family:var(--display); text-transform:uppercase; letter-spacing:2px; font-size:.6rem; color:#8a6d1f; margin-bottom:6px; }
+.side-ad img { width:100%; max-width:140px; height:auto; display:block; margin:0 auto; }
+.side-ad-name { display:block; margin-top:8px; color:#4a2d6b; font-weight:700; font-size:.82rem; }
 @media (max-width:760px){
   .layout { flex-direction:column; padding:0 12px; }
   .sidebar { position:static; flex:auto; width:100%; padding-top:12px; }
