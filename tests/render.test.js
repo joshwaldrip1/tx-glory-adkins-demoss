@@ -16,6 +16,9 @@ describe("statTile", () => {
     expect(html).toContain(".386");
     expect(html).toContain("AVG");
   });
+  it("adds a title tooltip when provided", () => {
+    expect(statTile("AVG", ".386", "Batting average")).toContain('title="Batting average"');
+  });
   it("collapses when blank", () => {
     expect(statTile("HR", "")).toBe("");
   });
@@ -40,10 +43,16 @@ describe("playerCard", () => {
 });
 
 describe("profile", () => {
-  it("shows pitching panel for a pitcher", () => {
+  it("shows only the groups the player has data for", () => {
     const html = profile(pitcher, BASE);
+    expect(html).toContain("Batting");
+    expect(html).toContain(".386");
     expect(html).toContain("Pitching");
     expect(html).toContain("55 mph");
+    expect(html).toContain("Fielding");
+    // pitcher has no catching or innings data → those panels must not appear
+    expect(html).not.toContain("Catching");
+    expect(html).not.toContain("Innings Played");
   });
   it("embeds youtube video", () => {
     expect(profile(pitcher, BASE)).toContain("https://www.youtube.com/embed/abc123");
@@ -53,10 +62,14 @@ describe("profile", () => {
     expect(html).toContain("Josh Waldrip");
     expect(html).not.toMatch(/date of birth/i);
   });
-  it("omits pitching + catching + academics panels when data absent", () => {
+  it("omits every stat group except the one with data", () => {
     const html = profile(minimalInfielder, BASE);
+    expect(html).toContain("Batting"); // has avg
+    expect(html).toContain(".300");
     expect(html).not.toContain("Pitching");
     expect(html).not.toContain("Catching");
+    expect(html).not.toContain("Fielding");
+    expect(html).not.toContain("Innings Played");
     expect(html).not.toContain("Academic");
   });
   it("drops non-http(s) links like javascript: and data:", () => {

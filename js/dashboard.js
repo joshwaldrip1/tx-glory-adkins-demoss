@@ -1,5 +1,6 @@
 import { listMine, savePlayer, uploadPhoto, signOut, currentUser } from "./api.js";
 import { esc } from "./render.js";
+import { STAT_GROUPS, slugStat } from "../data/stat-catalog.js";
 
 if (!(await currentUser())) location.href = "login.html";
 
@@ -9,6 +10,49 @@ const msg = $("msg");
 document.getElementById("logout").addEventListener("click", async () => {
   await signOut(); location.href = "index.html";
 });
+
+// --- Build the collapsible, grouped stat form from the catalog ---
+function statField(groupKey, s) {
+  const slug = slugStat(s.label);
+  const id = `stat_${groupKey}_${slug}`;
+  return `<div class="field">
+    <label for="${id}" title="${esc(s.name)}">${esc(s.label)} <span class="field-hint">${esc(s.name)}</span></label>
+    <input id="${id}" data-group="${groupKey}" data-slug="${slug}" autocomplete="off">
+  </div>`;
+}
+
+function buildStatForm() {
+  $("stat-groups").innerHTML = STAT_GROUPS.map((g, i) => {
+    const core = g.stats.filter((s) => s.core);
+    const adv = g.stats.filter((s) => !s.core);
+    const coreHtml = `<div class="statgrid">${core.map((s) => statField(g.key, s)).join("")}</div>`;
+    const advHtml = adv.length
+      ? `<details class="statgroup-adv"><summary>Advanced (${adv.length})</summary>
+           <div class="statgrid">${adv.map((s) => statField(g.key, s)).join("")}</div></details>`
+      : "";
+    return `<details class="statgroup"${i === 0 ? " open" : ""}>
+      <summary class="statgroup-title">${esc(g.title)}</summary>
+      ${coreHtml}${advHtml}
+    </details>`;
+  }).join("");
+}
+
+function statInputs() {
+  return document.querySelectorAll('#stat-groups [data-slug]');
+}
+
+// Collect non-empty stat inputs into { group: { slug: value } }, groups with data only.
+function collectStats() {
+  const stats = {};
+  statInputs().forEach((el) => {
+    const v = el.value.trim();
+    if (!v) return;
+    (stats[el.dataset.group] ||= {})[el.dataset.slug] = v;
+  });
+  return stats;
+}
+
+buildStatForm();
 
 async function refresh() {
   const players = await listMine();
@@ -22,24 +66,33 @@ async function refresh() {
     b.addEventListener("click", () => loadInto(players.find((p) => p.id === b.dataset.edit))));
 }
 
+const splitList = (v) => v.split(",").map((s) => s.trim()).filter(Boolean);
+
 function loadInto(p) {
   $("id").value = p.id;
-  for (const k of ["first_name","last_name","jersey_number","grad_year","bats_throws","height","video_url","guardian_name","guardian_email","guardian_phone"]) {
+  for (const k of ["first_name","last_name","jersey_number","grad_year","bats_throws","height","weight","hometown","school","gpa","video_url","guardian_name","guardian_email","guardian_phone"]) {
     $(k).value = p[k] ?? "";
   }
   $("positions").value = (p.positions ?? []).join(",");
-  $("avg").value = p.stats?.avg ?? "";
-  $("obp").value = p.stats?.obp ?? "";
-  $("era").value = p.metrics?.pitching?.era ?? "";
-  $("velo").value = p.metrics?.pitching?.velo ?? "";
+  $("about").value = p.bio?.about ?? "";
+  $("honor_roll").value = p.academics?.honor_roll ?? "";
+  $("awards").value = (p.academics?.awards ?? []).join(", ");
+  $("interests").value = (p.academics?.interests ?? []).join(", ");
+  $("achievements").value = (p.achievements ?? []).join(", ");
+  const st = p.stats || {};
+  statInputs().forEach((el) => {
+    el.value = st[el.dataset.group]?.[el.dataset.slug] ?? "";
+  });
+  msg.className = "notice";
   msg.textContent = `Editing ${p.first_name} ${p.last_name}`;
+  window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
 }
 
 $("form").addEventListener("submit", async (e) => {
   e.preventDefault();
   msg.className = "notice"; msg.textContent = "Saving…";
+  const submitBtn = e.target.querySelector('button[type="submit"]');
   try {
-    const submitBtn = e.target.querySelector('button[type="submit"]');
     if (submitBtn) submitBtn.disabled = true;
     const positions = $("positions").value.split(",").map((s) => s.trim().toUpperCase()).filter(Boolean);
     const player = {
@@ -51,8 +104,18 @@ $("form").addEventListener("submit", async (e) => {
       positions,
       bats_throws: $("bats_throws").value.trim(),
       height: $("height").value.trim(),
-      stats: { avg: $("avg").value.trim(), obp: $("obp").value.trim() },
-      metrics: { pitching: { era: $("era").value.trim(), velo: $("velo").value.trim() } },
+      weight: $("weight").value.trim(),
+      hometown: $("hometown").value.trim(),
+      school: $("school").value.trim(),
+      gpa: $("gpa").value ? Number($("gpa").value) : null,
+      bio: { about: $("about").value.trim() },
+      academics: {
+        honor_roll: $("honor_roll").value.trim(),
+        awards: splitList($("awards").value),
+        interests: splitList($("interests").value),
+      },
+      achievements: splitList($("achievements").value),
+      stats: collectStats(),
       video_url: $("video_url").value.trim(),
       guardian_name: $("guardian_name").value.trim(),
       guardian_email: $("guardian_email").value.trim(),
@@ -71,7 +134,6 @@ $("form").addEventListener("submit", async (e) => {
   } catch (err) {
     msg.className = "error"; msg.textContent = err.message;
   } finally {
-    const submitBtn = e.target.querySelector('button[type="submit"]');
     if (submitBtn) submitBtn.disabled = false;
   }
 });

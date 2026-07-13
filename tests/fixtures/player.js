@@ -1,3 +1,5 @@
+// Stat values are namespaced by group and keyed by slugStat(label):
+//   stats.batting.avg, stats.pitching.mphfb, stats.fielding.fpct, ...
 export const pitcher = {
   id: "charley-waldrip",
   first_name: "Charley",
@@ -11,16 +13,14 @@ export const pitcher = {
   gpa: 3.8,
   school: "Mildred HS",
   hometown: "Mildred, TX",
-  stats: { avg: ".386", obp: ".500", slg: ".404", ops: ".904", hr: "", rbi: "", hits: "44" },
-  metrics: {
-    fielding: { fielding_pct: ".897", chances: "107", assists: "71", errors: "11" },
-    running: { home_to_first: "", stolen_bases: "", sixty_yd: "" },
-    pitching: { velo: "55 mph", era: "3.75", k_bb: "", whip: "1.81", k_per_game: "9.75", arsenal: ["FB", "CH"], movement: "" },
-    catching: {},
+  stats: {
+    batting: { avg: ".386", obp: ".500", slg: ".404", ops: ".904", h: "44" },
+    pitching: { era: "3.75", whip: "1.81", mphfb: "55 mph", so: "26" },
+    fielding: { fpct: ".897", a: "71", e: "11" },
   },
   achievements: ["USSSA All-State", "Silver Slugger"],
   academics: { honor_roll: "All A's", awards: ["Mathematics Award"], interests: ["Doctor", "Lawyer"] },
-  bio: { about: "13U competing on 16U showcase team.", softball_iq: "", coachability: "", coach_note: "" },
+  bio: { about: "13U competing on 16U showcase team." },
   photo_path: "charley-waldrip/photo.jpg",
   video_url: "https://youtu.be/abc123",
   profile_url: "https://gc.com/charley",
@@ -45,8 +45,7 @@ export const minimalInfielder = {
   gpa: "",
   school: "",
   hometown: "",
-  stats: { avg: ".300" },
-  metrics: { fielding: {}, running: {}, pitching: {}, catching: {} },
+  stats: { batting: { avg: ".300" } },
   achievements: [],
   academics: {},
   bio: {},
