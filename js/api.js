@@ -31,7 +31,7 @@ export async function listMine() {
 export async function savePlayer(player) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not signed in");
-  const row = { ...player, owner_id: user.id, status: "pending" };
+  const row = { ...player, owner_id: user.id, status: "approved" };
   const { data, error } = await supabase
     .from("players").upsert(row).select().single();
   if (error) throw error;

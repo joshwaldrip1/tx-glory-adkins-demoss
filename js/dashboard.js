@@ -147,7 +147,7 @@ $("form").addEventListener("submit", async (e) => {
       const path = await uploadPhoto(saved.id, file);
       await savePlayer({ ...saved, photo_path: path });
     }
-    msg.textContent = "Saved. Submitted for review.";
+    msg.textContent = "Saved — your player is live on the roster.";
     $("form").reset(); $("id").value = "";
     await refresh();
   } catch (err) {
