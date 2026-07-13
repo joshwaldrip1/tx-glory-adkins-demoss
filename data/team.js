@@ -4,10 +4,10 @@ export const TEAM = {
   shortName: "TX Glory Adkins",
   taglinePrimary: "Compete. Hustle. Glory.",
   taglineSecondary: "Built on Passion.",
-  logo: "assets/team/logo.png", // supplied by user; placeholder path until then
+  logo: "assets/team/logo.png",
   coach: {
-    name: "TBD — set to real coach name before launch",
-    email: "coach@example.com",
-    phone: "",
+    name: "Billy DeMoss",
+    email: "josh_waldrip@yahoo.com",
+    phone: "903-229-1101",
   },
 };
