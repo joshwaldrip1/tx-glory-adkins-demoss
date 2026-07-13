@@ -1,0 +1,16 @@
+{
+  "name": "tx-glory-recruiting-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "qr": "node scripts/make-qr.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "^24.1.0",
+    "qrcode": "^1.5.4",
+    "vitest": "^2.0.0"
+  }
+}
