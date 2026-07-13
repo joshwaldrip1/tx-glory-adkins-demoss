@@ -1,4 +1,5 @@
-import { text, isPitcher, isCatcher, photoUrl, youTubeEmbed } from "./format.js";
+import { text, photoUrl, youTubeEmbed } from "./format.js";
+import { STAT_GROUPS, slugStat } from "../data/stat-catalog.js";
 
 export function esc(s) {
   return text(s)
@@ -13,19 +14,16 @@ function safeUrl(url) {
   return /^https?:\/\//i.test(u) ? u : "";
 }
 
-export function statTile(label, value) {
+export function statTile(label, value, title) {
   const v = text(value);
   if (v === "") return "";
-  return `<div class="tile"><span class="tile-num">${esc(v)}</span><span class="tile-label">${esc(label)}</span></div>`;
+  const t = title ? ` title="${esc(title)}"` : "";
+  return `<div class="tile"${t}><span class="tile-num">${esc(v)}</span><span class="tile-label">${esc(label)}</span></div>`;
 }
 
 export function panel(title, innerHtml) {
   if (!innerHtml) return "";
   return `<section class="panel"><h2 class="panel-title">${esc(title)}</h2><div class="panel-body">${innerHtml}</div></section>`;
-}
-
-function tiles(pairs) {
-  return pairs.map(([l, v]) => statTile(l, v)).join("");
 }
 
 function infoRow(label, value) {
@@ -45,41 +43,17 @@ export function nameBlock(p) {
   return `<div class="name-block">${num}<h1 class="player-name"><span class="fn">${esc(p.first_name)}</span> <span class="ln">${esc(p.last_name)}</span></h1><p class="classyear">Class of ${esc(p.grad_year)}</p></div>`;
 }
 
-function offensive(p) {
-  const s = p.stats || {};
-  return panel("Offensive Highlights", tiles([
-    ["AVG", s.avg], ["OBP", s.obp], ["SLG", s.slg], ["OPS", s.ops],
-    ["HR", s.hr], ["RBI", s.rbi], ["Hits", s.hits],
-    ["Exit Velo", s.exit_velo], ["Bat Speed", s.bat_speed],
-  ]));
-}
-
-function pitching(p) {
-  if (!isPitcher(p.positions)) return "";
-  const m = (p.metrics && p.metrics.pitching) || {};
-  const t = tiles([
-    ["Velocity", m.velo], ["ERA", m.era], ["K/Game", m.k_per_game],
-    ["WHIP", m.whip], ["K/BB", m.k_bb],
-  ]);
-  const arsenal = (m.arsenal && m.arsenal.length) ? `<p class="arsenal">Arsenal: ${m.arsenal.map(esc).join(" · ")}</p>` : "";
-  return panel("Pitching Highlights", t + arsenal + infoRow("Movement", m.movement));
-}
-
-function catching(p) {
-  if (!isCatcher(p.positions)) return "";
-  const m = (p.metrics && p.metrics.catching) || {};
-  return panel("Catching Highlights", tiles([
-    ["Pop Time", m.pop_time], ["Throw Velo", m.throw_velo], ["CS %", m.cs_pct],
-  ]) + infoRow("Notes", m.notes));
-}
-
-function fielding(p) {
-  const m = (p.metrics && p.metrics.fielding) || {};
-  const r = (p.metrics && p.metrics.running) || {};
-  return panel("Fielding & Athleticism", tiles([
-    ["Fielding %", m.fielding_pct], ["Chances", m.chances], ["Assists", m.assists], ["Errors", m.errors],
-    ["Home-1B", r.home_to_first], ["Stolen Bases", r.stolen_bases], ["60-yd", r.sixty_yd],
-  ]));
+// Build one panel per stat group from the catalog. A tile renders only when the
+// parent filled that stat; a whole group's panel collapses when it has no values.
+export function statSections(p) {
+  const stats = p.stats || {};
+  return STAT_GROUPS.map((g) => {
+    const vals = stats[g.key] || {};
+    const inner = g.stats
+      .map((s) => statTile(s.label, vals[slugStat(s.label)], s.name))
+      .join("");
+    return panel(g.title, inner);
+  }).join("");
 }
 
 function academics(p) {
@@ -143,10 +117,7 @@ export function profile(p, baseUrl) {
       ${nameBlock(p)}
     </header>
     ${infoPanel}
-    ${offensive(p)}
-    ${pitching(p)}
-    ${catching(p)}
-    ${fielding(p)}
+    ${statSections(p)}
     ${achievements(p)}
     ${academics(p)}
     ${about}
