@@ -126,6 +126,8 @@ a { color:var(--gold-hi); }
 .social-link { display:inline-flex; line-height:0; }
 .social-link svg { width:26px; height:26px; fill:var(--gold); transition:fill .15s, transform .15s; }
 .social-link:hover svg { fill:var(--gold-hi); transform:translateY(-2px); }
+.social-img { height:26px; width:auto; display:block; transition:transform .15s; }
+.social-link:hover .social-img { transform:translateY(-2px); }
 
 /* ---------- Video + buttons ---------- */
 .video { position:relative; width:100%; aspect-ratio:16/9; margin:18px 0; }
