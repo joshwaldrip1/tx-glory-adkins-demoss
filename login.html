@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Parent Login — Texas Glory Adkins-DeMoss</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar"><a href="index.html" class="btn">← Roster</a></header>
+  <main class="wrap" style="max-width:420px">
+    <h1 class="player-name"><span class="fn">Parent</span> <span class="ln">Login</span></h1>
+    <div class="field"><label>Email</label><input id="email" type="email" autocomplete="email"></div>
+    <div class="field"><label>Password</label><input id="password" type="password" autocomplete="current-password"></div>
+    <div style="display:flex; gap:10px; margin:12px 0">
+      <button class="btn" id="login">Log In</button>
+      <button class="btn" id="signup" style="background:var(--panel-2); color:var(--gold)">Sign Up</button>
+    </div>
+    <p id="msg" class="notice"></p>
+  </main>
+  <script type="module" src="js/auth.js"></script>
+</body>
+</html>
