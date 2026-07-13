@@ -6,6 +6,17 @@ import { STAT_GROUPS, slugStat } from "../data/stat-catalog.js";
 // allow-list, and adding a group to the catalog can never silently drop its card.
 const CARD_ORDER = ["batting", "fielding", "pitching", "catching", "innings"];
 
+// Team flyer artwork (transparent PNGs). Section headers + stat-card titles + icons.
+const ART = "assets/team/art/";
+const RIBBON = {
+  playerinfo: "ribbon-playerinfo", playerstats: "ribbon-playerstats",
+  academics: "ribbon-academics", interests: "ribbon-interests", contact: "ribbon-contact",
+};
+const CARD_TITLE = {
+  batting: "title-batting", fielding: "title-fielding", pitching: "title-pitching",
+  catching: "title-catching", innings: "title-innings",
+};
+
 export function esc(s) {
   return text(s)
     .replaceAll("&", "&amp;")
@@ -19,6 +30,19 @@ function safeUrl(url) {
   return /^https?:\/\//i.test(u) ? u : "";
 }
 
+// Gold ribbon section header — uses the flyer artwork, falling back to styled text.
+function ribbon(key, textFallback) {
+  const f = RIBBON[key];
+  if (f) return `<div class="ribbon"><img src="${ART}${f}.png" alt="${esc(textFallback)}"></div>`;
+  return `<div class="ribbon"><span>${esc(textFallback)}</span></div>`;
+}
+
+function cardTitle(key, textFallback) {
+  const f = CARD_TITLE[key];
+  if (f) return `<img class="card-title-img" src="${ART}${f}.png" alt="${esc(textFallback)}">`;
+  return `<h3 class="card-title">${esc(textFallback)}</h3>`;
+}
+
 export function statTile(label, value, title) {
   const v = text(value);
   if (v === "") return "";
@@ -29,11 +53,6 @@ export function statTile(label, value, title) {
 export function panel(title, innerHtml) {
   if (!innerHtml) return "";
   return `<section class="panel"><h2 class="panel-title">${esc(title)}</h2><div class="panel-body">${innerHtml}</div></section>`;
-}
-
-// Gold "ribbon" section header, like the flyer.
-function ribbon(title) {
-  return `<div class="ribbon"><span>${esc(title)}</span></div>`;
 }
 
 function infoRow(label, value) {
@@ -49,7 +68,6 @@ function listLine(label, items) {
 }
 
 // One stat card per group (only if it has data), in flyer order.
-// Iterates the catalog itself (single source of truth), sorted by CARD_ORDER.
 function statCards(p) {
   const stats = p.stats || {};
   const rank = (k) => { const i = CARD_ORDER.indexOf(k); return i < 0 ? 999 : i; };
@@ -61,24 +79,22 @@ function statCards(p) {
         .map((s) => statTile(s.label, vals[slugStat(s.label)], s.name))
         .join("");
       if (!tiles) return "";
-      return `<section class="stat-card"><h3 class="card-title">${esc(g.title)}</h3><div class="card-tiles">${tiles}</div></section>`;
+      return `<section class="stat-card">${cardTitle(g.key, g.title)}<div class="card-tiles">${tiles}</div></section>`;
     })
     .join("");
 }
 
 function playerInfo(p) {
   const bt = text(p.bats_throws).split("/");
-  const bats = text(bt[0]).trim();
-  const throws = text(bt[1]).trim();
   const tiles =
     statTile("Height", p.height) +
     statTile("Weight", p.weight) +
-    statTile("Bats", bats) +
-    statTile("Throws", throws);
+    statTile("Bats", text(bt[0]).trim()) +
+    statTile("Throws", text(bt[1]).trim());
   const rows = infoRow("Hometown", p.hometown) + infoRow("School", p.school);
   if (!tiles && !rows) return "";
   return `<section class="panel info-panel">
-    <h2 class="panel-title">Player Information</h2>
+    ${ribbon("playerinfo", "Player Information")}
     <div class="card-tiles">${tiles}</div>
     ${rows}
   </section>`;
@@ -92,13 +108,13 @@ function academics(p) {
     listLine("Academic Awards", a.awards) +
     listLine("Athletic Awards", p.achievements);
   if (!inner) return "";
-  return `<section class="panel"><h2 class="panel-title">Academic &amp; Awards</h2>${inner}</section>`;
+  return `<section class="panel">${ribbon("academics", "Academic & Awards")}${inner}</section>`;
 }
 
 function interests(p) {
   const inner = listLine("Academic Interests", (p.academics || {}).interests);
   if (!inner) return "";
-  return `<section class="panel"><h2 class="panel-title">Interests</h2>${inner}</section>`;
+  return `<section class="panel">${ribbon("interests", "Interests")}${inner}</section>`;
 }
 
 function video(p) {
@@ -109,13 +125,19 @@ function video(p) {
   return "";
 }
 
+function contactItem(iconKey, lines) {
+  const vals = (lines || []).filter((x) => text(x) !== "");
+  if (vals.length === 0) return "";
+  return `<div class="contact-item"><img class="contact-icon" src="${ART}icon-${iconKey}.png" alt=""><span>${vals.map(esc).join("<br>")}</span></div>`;
+}
+
 function contactRow(p) {
   const inner =
-    infoRow("Contact", p.guardian_name) +
-    infoRow("Email", p.guardian_email) +
-    infoRow("Phone", p.guardian_phone);
+    contactItem("email", [p.guardian_name, p.guardian_email]) +
+    contactItem("phone", [p.guardian_phone]) +
+    contactItem("location", [p.hometown]);
   if (!inner) return "";
-  return `${ribbon("Contact Information")}<section class="panel contact-panel">${inner}</section>`;
+  return `${ribbon("contact", "Contact Information")}<section class="panel contact-panel">${inner}</section>`;
 }
 
 export function playerCard(p, baseUrl) {
@@ -142,7 +164,7 @@ export function profile(p, baseUrl, teamLogo) {
   const safeProfile = safeUrl(p.profile_url);
   const link = safeProfile ? `<a class="btn" href="${esc(safeProfile)}" target="_blank" rel="noopener">Full Stats Profile</a>` : "";
   const cards = statCards(p);
-  const statsSection = cards ? `${ribbon("Player Stats")}<div class="stat-cards">${cards}</div>` : "";
+  const statsSection = cards ? `${ribbon("playerstats", "Player Stats")}<div class="stat-cards">${cards}</div>` : "";
 
   return `<article class="profile">
     <header class="hero">
