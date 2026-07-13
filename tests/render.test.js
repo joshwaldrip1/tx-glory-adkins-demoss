@@ -59,4 +59,13 @@ describe("profile", () => {
     expect(html).not.toContain("Catching");
     expect(html).not.toContain("Academic");
   });
+  it("drops non-http(s) links like javascript: and data:", () => {
+    const html = profile({ ...pitcher, video_url: "javascript:alert(1)", profile_url: "data:text/html,x" }, BASE);
+    expect(html).not.toContain("javascript:alert");
+    expect(html).not.toContain("data:text/html");
+  });
+  it("escapes injected markup in text fields", () => {
+    const html = profile({ ...pitcher, first_name: "<script>alert(1)</script>" }, BASE);
+    expect(html).not.toContain("<script>alert(1)</script>");
+  });
 });

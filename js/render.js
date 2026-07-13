@@ -1,4 +1,4 @@
-import { text, hasAny, isPitcher, isCatcher, photoUrl, youTubeEmbed } from "./format.js";
+import { text, isPitcher, isCatcher, photoUrl, youTubeEmbed } from "./format.js";
 
 export function esc(s) {
   return text(s)
@@ -6,6 +6,11 @@ export function esc(s) {
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
+}
+
+function safeUrl(url) {
+  const u = text(url).trim();
+  return /^https?:\/\//i.test(u) ? u : "";
 }
 
 export function statTile(label, value) {
@@ -94,7 +99,8 @@ function achievements(p) {
 function video(p) {
   const embed = youTubeEmbed(p.video_url);
   if (embed) return `<div class="video"><iframe src="${esc(embed)}" title="Highlights" allowfullscreen loading="lazy"></iframe></div>`;
-  if (text(p.video_url)) return `<a class="btn" href="${esc(p.video_url)}" target="_blank" rel="noopener">Watch Highlights</a>`;
+  const safe = safeUrl(p.video_url);
+  if (safe) return `<a class="btn" href="${esc(safe)}" target="_blank" rel="noopener">Watch Highlights</a>`;
   return "";
 }
 
@@ -129,7 +135,8 @@ export function profile(p, baseUrl) {
     infoRow("School", p.school) +
     infoRow("Hometown", p.hometown));
   const about = text((p.bio || {}).about) ? panel("About", `<p>${esc(p.bio.about)}</p>`) : "";
-  const link = text(p.profile_url) ? `<a class="btn" href="${esc(p.profile_url)}" target="_blank" rel="noopener">Full Stats Profile</a>` : "";
+  const safeProfile = safeUrl(p.profile_url);
+  const link = safeProfile ? `<a class="btn" href="${esc(safeProfile)}" target="_blank" rel="noopener">Full Stats Profile</a>` : "";
   return `<article class="profile">
     <header class="profile-head">
       <img class="profile-photo" src="${esc(img)}" alt="${esc(p.first_name)} ${esc(p.last_name)}">
