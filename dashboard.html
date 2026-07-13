@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Players — Texas Glory Adkins-DeMoss</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a href="index.html" class="btn">← Roster</a>
+    <button class="btn" id="logout" style="margin-left:auto; background:var(--panel-2); color:var(--gold)">Log Out</button>
+  </header>
+  <main class="wrap">
+    <h1 class="player-name"><span class="fn">My</span> <span class="ln">Players</span></h1>
+    <p class="notice">New or edited profiles are reviewed by the team before they appear to scouts.</p>
+    <div id="mine"></div>
+    <section class="panel">
+      <h2 class="panel-title">Add / Edit Player</h2>
+      <form id="form" class="panel-body" style="flex-direction:column">
+        <input type="hidden" id="id">
+        <div class="field"><label>First name</label><input id="first_name" required></div>
+        <div class="field"><label>Last name</label><input id="last_name" required></div>
+        <div class="field"><label>Jersey #</label><input id="jersey_number" type="number"></div>
+        <div class="field"><label>Grad year</label><input id="grad_year" type="number"></div>
+        <div class="field"><label>Positions (comma separated, e.g. P,3B)</label><input id="positions"></div>
+        <div class="field"><label>Bats/Throws</label><input id="bats_throws" placeholder="R/R"></div>
+        <div class="field"><label>Height</label><input id="height"></div>
+        <div class="field"><label>Batting AVG</label><input id="avg"></div>
+        <div class="field"><label>OBP</label><input id="obp"></div>
+        <div class="field"><label>ERA (pitchers)</label><input id="era"></div>
+        <div class="field"><label>Pitch velo (pitchers)</label><input id="velo"></div>
+        <div class="field"><label>Highlight video URL (YouTube/Hudl)</label><input id="video_url"></div>
+        <div class="field"><label>Guardian name</label><input id="guardian_name" required></div>
+        <div class="field"><label>Guardian email</label><input id="guardian_email" type="email" required></div>
+        <div class="field"><label>Guardian phone</label><input id="guardian_phone"></div>
+        <div class="field"><label>Player photo</label><input id="photo" type="file" accept="image/*"></div>
+        <button class="btn" type="submit">Save (submit for review)</button>
+        <p id="msg"></p>
+      </form>
+    </section>
+  </main>
+  <script type="module" src="js/dashboard.js"></script>
+</body>
+</html>
