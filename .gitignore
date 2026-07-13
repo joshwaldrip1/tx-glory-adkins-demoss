@@ -1,0 +1,10 @@
+# Local design reference only — contains minors' personal data; never publish
+assets/reference/
+
+# Supabase local secrets / env
+.env
+.env.local
+
+# OS / editor cruft
+Thumbs.db
+.DS_Store

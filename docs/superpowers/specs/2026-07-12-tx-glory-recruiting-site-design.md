@@ -50,23 +50,37 @@ Two halves:
 |--------|------|-------|
 | `id` | uuid | primary key, default `gen_random_uuid()` |
 | `owner_id` | uuid | FK → `auth.users`; a parent may own more than one player |
-| `first_name` | text | |
-| `last_initial` | text | e.g. "A." — no full last name publicly |
-| `grad_year` | int | |
-| `positions` | text[] | e.g. `{SS,2B}` — drives which stat sections render |
-| `bats_throws` | text | e.g. "R/R" |
+| `first_name` | text | displayed white in the name treatment |
+| `last_name` | text | displayed gold; public roster may abbreviate to last initial (see privacy) |
+| `jersey_number` | int | large corner display (e.g. #15) |
+| `grad_year` | int | "Class of ____"; signals age without publishing DOB |
+| `positions` | text[] | primary first, e.g. `{P,3B}` — drives which stat sections render |
+| `bats_throws` | text | e.g. "L/R" |
 | `height` | text | e.g. "5'6\"" |
+| `weight` | text | e.g. "140 lbs" (optional) |
+| `gpa` | numeric | e.g. 3.80 |
+| `school` | text | high school (optional) |
+| `hometown` | text | e.g. "Mildred, TX" (optional) |
 | `stats` | jsonb | batting/offensive group (see below) |
 | `metrics` | jsonb | fielding, base running, pitching, catching groups |
-| `bio` | jsonb | narrative: softball IQ, coachability, coach's note |
+| `achievements` | text[] | career honors (All-State, All-American, MVP, All-District, Silver Slugger…) |
+| `academics` | jsonb | honor roll, awards, academic interests |
+| `bio` | jsonb | narrative: about-me, softball IQ, coachability, coach's note |
 | `photo_path` | text | path in Storage `player-photos` bucket |
-| `video_url` | text | YouTube/Hudl embed link |
+| `video_url` | text | YouTube/Hudl highlight embed link |
+| `profile_url` | text | external full-stats link (GameChanger / NCSA), optional |
+| `socials` | jsonb | opt-in handles (instagram…), family's choice; empty by default |
 | `guardian_name` | text | contact routes to the adult |
 | `guardian_email` | text | |
 | `guardian_phone` | text | |
 | `status` | text | `'pending' \| 'approved'`, default `'pending'` |
 | `created_at` | timestamptz | default `now()` |
 | `updated_at` | timestamptz | maintained on update |
+
+**Deliberately omitted:** date of birth, player personal phone/email. Grad year
+conveys recruiting class; contact routes through a guardian. This is the one
+place the website intentionally diverges from the laminated flyers, which show
+more personal data than is safe to publish on a crawlable public page.
 
 ### Metric groups (JSON, position-aware rendering)
 
@@ -81,6 +95,8 @@ The profile page renders a group's section **only when it applies**.
   ratio, pitch arsenal (FB/CH/CU/Rise…), movement notes.
 - **Catching** (only if `positions` includes `C`): pop time, throw velocity,
   caught-stealing %, framing/blocking notes.
+- **Career achievements** (all): honors list rendered as gold-star bullets.
+- **Academic highlights** (all): GPA, honor roll, awards, academic interests.
 - **Scouting narrative** (all, free text): softball IQ, coachability/character,
   coach's note.
 
@@ -103,6 +119,46 @@ only photos under paths for players they own.
 
 Accounts use email verification so each account ties to a real inbox. The anon
 key is public by design; all protection is enforced server-side by RLS.
+
+## Visual design / brand
+
+Derived from the team's existing player flyers (see `assets/reference/`).
+Example 1 (Charley Waldrip) is the reference layout for the profile page.
+
+**Color tokens (CSS custom properties):**
+```
+--bg:        #0E0E0E   /* page background, near-black */
+--panel:     #1A1A1A   /* stat panels / cards */
+--panel-2:   #232323   /* raised elements, table stripes */
+--gold:      #C9A24B   /* primary accent, labels, last name */
+--gold-hi:   #E7C66B   /* highlights, hovers, focus rings */
+--text:      #F5F5F5   /* body text on dark */
+--muted:     #A8A8A8   /* secondary labels */
+--line:      #333333   /* hairline dividers */
+```
+Canonical palette is black + gold. (A warm copper `#C77B3B` appears on some
+flyers; not adopted, to keep the site consistent.)
+
+**Typography:**
+- Display / names / stat numbers: a bold condensed sans (e.g. Oswald / Teko /
+  Anton via a self-hosted or Google-font link). Uppercase, tight tracking.
+- Body / labels: a clean sans (e.g. Inter / system-ui). Labels are small,
+  uppercase, letter-spaced, in `--gold` or `--muted`.
+- **Name treatment:** first name in white, last name in gold, stacked; jersey
+  number large in a corner.
+
+**Signature components:**
+- **Stat tile:** big number (display font) over a tiny uppercase label. Tiles
+  sit in a grid inside a titled panel.
+- **Highlight panel:** titled section (Offensive / Pitching / Fielding /
+  Academic) with a small icon, holding a grid of stat tiles.
+- **Info row:** gold uppercase label + white value (position, bats/throws…).
+- **Achievement list:** gold-star bullets.
+- **Footer band:** tagline ("Compete. Hustle. Glory." / "Built on Passion").
+
+**Logo assets** (to be supplied): Glory script wordmark, Spartan-helmet
+"Glory Fastpitch" mark, and/or the G star-shield crest — placed in
+`assets/team/`. Roster header uses the primary team logo.
 
 ## Pages
 
