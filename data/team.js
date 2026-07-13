@@ -10,4 +10,9 @@ export const TEAM = {
     email: "Glorydemoss@outlook.com",
     phone: "903-229-1101",
   },
+  // Team social links. Add more as { platform, url } — icons appear automatically.
+  // Supported platforms: facebook, instagram, x, tiktok, youtube, gamechanger, website.
+  socials: [
+    { platform: "facebook", url: "https://www.facebook.com/profile.php?id=61590009645569" },
+  ],
 };
