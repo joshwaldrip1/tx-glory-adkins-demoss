@@ -95,7 +95,6 @@ function playerInfo(p) {
     statTile("Grad Year", p.grad_year);
   const b = p.bio || {};
   const rows =
-    infoRow("Positions", (p.positions || []).join(" / ")) +
     infoRow("Commitment", b.commitment) +
     infoRow("Bat / Glove / Throws", b.bat_glove) +
     infoRow("Hometown", p.hometown) +
