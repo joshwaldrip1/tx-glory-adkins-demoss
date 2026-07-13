@@ -83,7 +83,7 @@ a { color:var(--gold-hi); }
 .panel { background:linear-gradient(180deg,var(--panel),#0d0d0d); border:1px solid rgba(201,164,75,.32); border-radius:14px; padding:16px 18px 18px; margin:0; box-shadow:0 6px 20px rgba(0,0,0,.35); }
 .panel-title { font-family:var(--display); text-transform:uppercase; letter-spacing:2px; font-weight:700; color:var(--gold); margin:0 0 12px; font-size:1.05rem; display:flex; align-items:center; gap:10px; }
 .panel-title::before { content:""; width:6px; height:1.05em; background:var(--gold); border-radius:2px; display:inline-block; }
-.info-panel .card-tiles { grid-template-columns:repeat(4,1fr); }
+.info-panel .card-tiles { grid-template-columns:repeat(3,1fr); }
 
 /* ---------- Stat cards row ---------- */
 .stat-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; }

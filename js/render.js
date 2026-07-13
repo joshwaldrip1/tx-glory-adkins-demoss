@@ -90,8 +90,13 @@ function playerInfo(p) {
     statTile("Height", p.height) +
     statTile("Weight", p.weight) +
     statTile("Bats", text(bt[0]).trim()) +
-    statTile("Throws", text(bt[1]).trim());
-  const rows = infoRow("Hometown", p.hometown) + infoRow("School", p.school);
+    statTile("Throws", text(bt[1]).trim()) +
+    statTile("GPA", p.gpa) +
+    statTile("Grad Year", p.grad_year);
+  const rows =
+    infoRow("Positions", (p.positions || []).join(" / ")) +
+    infoRow("Hometown", p.hometown) +
+    infoRow("School", p.school);
   if (!tiles && !rows) return "";
   return `<section class="panel info-panel">
     <div class="info-top">
@@ -105,7 +110,6 @@ function playerInfo(p) {
 function academics(p) {
   const a = p.academics || {};
   const inner =
-    infoRow("GPA", p.gpa) +
     infoRow("Honor Roll", a.honor_roll) +
     listLine("Academic Awards", a.awards) +
     listLine("Athletic Awards", p.achievements);
