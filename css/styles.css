@@ -104,7 +104,7 @@ a { color:var(--gold-hi); }
 /* ---------- Two-column (academics / interests / contact) ---------- */
 .two-col { display:grid; grid-template-columns:1fr; gap:16px; margin-top:14px; }
 @media (min-width:760px){ .two-col{ grid-template-columns:1fr 1fr; } }
-.contact-panel { display:flex; flex-wrap:wrap; gap:14px 36px; }
+.contact-panel { display:flex; flex-wrap:wrap; justify-content:center; gap:14px 44px; }
 .contact-item { display:flex; align-items:center; gap:12px; }
 .contact-item span { color:var(--text); font-weight:600; }
 .contact-icon { height:30px; width:auto; flex:0 0 auto; }
