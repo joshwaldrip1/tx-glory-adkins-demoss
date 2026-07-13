@@ -151,7 +151,7 @@ export function profile(p, baseUrl, teamLogo) {
         <div class="pos-row">${posPill}${cls}</div>
         ${about}
       </div>
-      <div class="hero-side">${jersey}${logo}</div>
+      <div class="hero-brand">${logo}${jersey}</div>
     </header>
 
     <div class="info-photo">
