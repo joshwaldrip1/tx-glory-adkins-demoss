@@ -26,6 +26,8 @@ export function photoUrl(path, baseUrl) {
 
 export function youTubeEmbed(url) {
   if (!url) return null;
+  const isYouTube = url.includes("youtube.com") || url.includes("youtu.be");
+  if (!isYouTube) return null;
   const m = url.match(/(?:youtu\.be\/|[?&]v=)([A-Za-z0-9_-]{6,})/);
   return m ? `https://www.youtube.com/embed/${m[1]}` : null;
 }

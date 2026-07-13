@@ -53,4 +53,7 @@ describe("youTubeEmbed", () => {
     expect(youTubeEmbed("https://hudl.com/video/xyz")).toBeNull();
     expect(youTubeEmbed("")).toBeNull();
   });
+  it("returns null for non-youtube urls that carry a v= param", () => {
+    expect(youTubeEmbed("https://vimeo.com/watch?v=abc123")).toBeNull();
+  });
 });
