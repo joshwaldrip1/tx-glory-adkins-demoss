@@ -26,7 +26,9 @@ served from there. Your computer can be off and the site stays up.
 1. Create a Supabase project. In the SQL editor, run in order:
    `supabase/schema.sql`, `supabase/policies.sql`, `supabase/storage.sql`.
 2. Storage → create a **public** bucket named `player-photos` (before running storage.sql).
-3. Authentication → Providers → Email: enable + require email confirmation.
+3. Authentication → Providers → Email: enable it. **Turn OFF "Confirm email"**
+   (Authentication → Sign In / Providers → Email → uncheck *Confirm email*).
+   See "Signup emails / rate limits" below for why.
 4. Put your project URL + anon key in `js/config.js`.
 5. Set the real coach contact + logo path in `data/team.js`, and add `assets/team/logo.png`.
 
@@ -51,6 +53,32 @@ Parents sign up, add/edit their own player, and it publishes immediately
 allowlist (admin-only writes). Admins edit the schedule in the dashboard's
 "Team Schedule (Admin)" section. Add an admin: insert their auth user id into
 `public.admins`.
+
+## Signup emails / rate limits
+If parents see **"email rate limit exceeded"** on Sign Up, it's Supabase's
+built-in email sender, not our code. That sender is capped at only a few
+messages per hour, so when a group of parents signs up together the later
+ones get blocked. Two ways to fix it (dashboard, no code change):
+
+- **Recommended — turn off email confirmation.** Authentication → Sign In /
+  Providers → Email → uncheck **Confirm email**. Signup then logs the parent
+  in instantly with no email sent, so there's nothing to rate-limit. This site
+  auto-approves players, so the confirmation email adds friction without any
+  security benefit. (The login page already handles both modes.)
+- **Or keep confirmation and add your own SMTP.** Authentication → Emails →
+  SMTP Settings → plug in a provider (e.g. Resend or SendGrid). That raises the
+  limit far beyond the built-in sender.
+
+**"Confirmation link opens a 404."** The link redirects to whatever is set in
+Authentication → **URL Configuration**, and this site lives on a GitHub Pages
+*subpath*. Set both to the subpath (not the bare `github.io` root, and not
+`localhost`):
+- **Site URL:** `https://joshwaldrip1.github.io/tx-glory-adkins-demoss/`
+- **Redirect URLs** (allowlist): add `https://joshwaldrip1.github.io/tx-glory-adkins-demoss/**`
+
+The signup code already passes the login page as the redirect target, but it
+only takes effect once that URL is on the Redirect URLs allowlist above.
+(Turning off email confirmation, per the first fix, sidesteps this entirely.)
 
 ## Privacy
 `assets/reference/` is git-ignored and must never be committed (contains
