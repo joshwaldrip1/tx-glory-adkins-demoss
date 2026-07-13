@@ -19,5 +19,6 @@ try {
     ? players.map((p) => playerCard(p, SUPABASE_URL)).join("")
     : `<p class="notice">No players published yet.</p>`;
 } catch (e) {
-  grid.innerHTML = `<p class="error">Could not load roster: ${e.message}</p>`;
+  console.error(e);
+  grid.innerHTML = `<p class="error">Could not load the roster right now. Please try again later.</p>`;
 }

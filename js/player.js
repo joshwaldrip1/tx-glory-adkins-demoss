@@ -16,6 +16,7 @@ if (!id) {
       main.innerHTML = profile(p, SUPABASE_URL);
     }
   } catch (e) {
-    main.innerHTML = `<p class="error">Could not load player: ${e.message}</p>`;
+    console.error(e);
+    main.innerHTML = `<p class="error">Could not load this player.</p>`;
   }
 }
