@@ -1,7 +1,7 @@
 // Static, non-secret team info shown site-wide.
 export const TEAM = {
-  name: "Texas Glory Adkins-DeMoss",
-  shortName: "TX Glory Adkins",
+  name: "TX Glory Adkins DeMoss",
+  shortName: "TX Glory Adkins DeMoss",
   taglinePrimary: "Compete. Hustle. Glory.",
   taglineSecondary: "Built on Passion.",
   logo: "assets/team/glory-gold.png",
