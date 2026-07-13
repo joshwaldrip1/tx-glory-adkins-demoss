@@ -44,7 +44,7 @@ const socialsHtml = socials.length
 document.getElementById("coach").innerHTML =
   `<h2 class="panel-title">Coach Contact</h2>
    <div class="panel-body"><div class="info-row"><span class="info-label">Coach</span><span class="info-value">${esc(TEAM.coach.name)}</span></div>
-   <div class="info-row"><span class="info-label">Email</span><span class="info-value">${esc(TEAM.coach.email)}</span></div>
+   <div class="info-row"><span class="info-label">Email</span><span class="info-value"><a class="mail-link" href="mailto:${esc(TEAM.coach.email)}">${esc(TEAM.coach.email)}</a><a class="mail-icon" href="mailto:${esc(TEAM.coach.email)}" aria-label="Email the team" title="Send an email"><img src="assets/team/art/icon-email.png" alt=""></a></span></div>
    ${socialsHtml}</div>`;
 
 const grid = document.getElementById("grid");

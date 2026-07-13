@@ -121,6 +121,13 @@ a { color:var(--gold-hi); }
 .news-badge { font-family:var(--display); font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--gold); flex:0 0 auto; }
 .news-text { color:var(--text); font-weight:600; }
 
+/* Clickable email (coach panel) */
+.mail-link { color:var(--gold-hi); text-decoration:none; }
+.mail-link:hover { text-decoration:underline; }
+.mail-icon { display:inline-flex; vertical-align:middle; margin-left:10px; }
+.mail-icon img { height:20px; width:auto; transition:transform .15s; }
+.mail-icon:hover img { transform:translateY(-2px); }
+
 /* Team social icons (roster coach panel) */
 .social-icons { display:inline-flex; align-items:center; gap:16px; }
 .social-link { display:inline-flex; line-height:0; }
