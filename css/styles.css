@@ -114,6 +114,13 @@ a { color:var(--gold-hi); }
 .about-me { padding-top:10px; }
 .about-me p { margin:5px 0 0; color:var(--text); font-weight:400; line-height:1.5; }
 
+/* "In the News" banner */
+#news { margin:0 0 16px; }
+.news-banner { display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; text-decoration:none; background:linear-gradient(180deg,var(--panel),#0d0d0d); border:1px solid var(--gold); border-left:6px solid var(--gold); border-radius:12px; padding:12px 18px; margin-bottom:10px; transition:border-color .15s, transform .15s; }
+.news-banner:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(0,0,0,.45); }
+.news-badge { font-family:var(--display); font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--gold); flex:0 0 auto; }
+.news-text { color:var(--text); font-weight:600; }
+
 /* Team social icons (roster coach panel) */
 .social-icons { display:inline-flex; align-items:center; gap:16px; }
 .social-link { display:inline-flex; line-height:0; }

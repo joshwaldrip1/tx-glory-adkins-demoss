@@ -15,4 +15,12 @@ export const TEAM = {
   socials: [
     { platform: "facebook", url: "https://www.facebook.com/profile.php?id=61590009645569" },
   ],
+  // "In the News" banners on the roster page. Add more as { source, title, url }.
+  news: [
+    {
+      source: "FOX 44 News",
+      title: "Central Texas softball players showcase talent at inaugural college exposure camp",
+      url: "https://www.fox44news.com/sports/central-texas-softball-players-showcase-talent-at-inaugural-college-exposure-camp/",
+    },
+  ],
 };

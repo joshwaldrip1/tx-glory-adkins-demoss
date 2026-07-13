@@ -8,6 +8,14 @@ document.getElementById("tagline").textContent = `${TEAM.taglinePrimary} — ${T
 const logo = document.getElementById("logo");
 logo.src = TEAM.logo;
 
+// "In the News" banner(s)
+const news = (TEAM.news || []).filter((n) => n && n.url && /^https?:\/\//i.test(n.url));
+document.getElementById("news").innerHTML = news.map((n) =>
+  `<a class="news-banner" href="${esc(n.url)}" target="_blank" rel="noopener">
+     <span class="news-badge">📺 In the News</span>
+     <span class="news-text">${esc(n.source)} — ${esc(n.title)}</span>
+   </a>`).join("");
+
 // Brand glyphs (single-path SVGs, viewBox 0 0 24 24). Only platforms present in
 // TEAM.socials render; a globe is the fallback for anything without a glyph.
 const SOCIAL = {
