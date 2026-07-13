@@ -1,6 +1,7 @@
-import { listMine, savePlayer, uploadPhoto, deletePlayer, signOut, currentUser } from "./api.js";
+import { listMine, savePlayer, uploadPhoto, deletePlayer, signOut, currentUser, isAdmin, listGames, saveGame, deleteGame } from "./api.js";
 import { esc } from "./render.js";
 import { STAT_GROUPS, slugStat } from "../data/stat-catalog.js";
+import { formatGameDate } from "./schedule.js";
 
 if (!(await currentUser())) location.href = "login.html";
 
@@ -175,3 +176,69 @@ $("form").addEventListener("submit", async (e) => {
 });
 
 await refresh();
+
+// --- Admin-only: team schedule editor ---
+if (await isAdmin()) {
+  $("admin-schedule").hidden = false;
+  const gmsg = $("game-msg");
+
+  async function refreshGames() {
+    const games = await listGames();
+    $("games-list").innerHTML = games.length
+      ? games.map((g) =>
+          `<div class="info-row"><span class="info-value">${esc(formatGameDate(g.game_date))} ${esc(g.game_time ?? "")} — ${esc([g.event, g.opponent].filter(Boolean).join(" vs "))}${g.result ? " · " + esc(g.result) : ""}</span>
+           <span class="row-actions">
+             <button class="btn" data-gedit="${esc(g.id)}">Edit</button>
+             <button class="btn btn-danger" data-gdel="${esc(g.id)}">Delete</button>
+           </span></div>`).join("")
+      : `<p class="notice">No games yet — add one below.</p>`;
+    document.querySelectorAll("[data-gedit]").forEach((b) =>
+      b.addEventListener("click", () => {
+        const g = games.find((x) => x.id === b.dataset.gedit);
+        if (!g) return;
+        $("game_id").value = g.id;
+        $("game_date").value = g.game_date ?? "";
+        $("game_time").value = g.game_time ?? "";
+        $("game_event").value = g.event ?? "";
+        $("game_opponent").value = g.opponent ?? "";
+        $("game_location").value = g.location ?? "";
+        $("game_result").value = g.result ?? "";
+        gmsg.className = "notice"; gmsg.textContent = "Editing game — Save to update.";
+      }));
+    document.querySelectorAll("[data-gdel]").forEach((b) =>
+      b.addEventListener("click", async () => {
+        if (!confirm("Delete this game?")) return;
+        b.disabled = true;
+        try { await deleteGame(b.dataset.gdel); await refreshGames(); }
+        catch (e) { gmsg.className = "error"; gmsg.textContent = e.message; b.disabled = false; }
+      }));
+  }
+
+  $("game-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    gmsg.className = "notice"; gmsg.textContent = "Saving…";
+    const btn = e.target.querySelector('button[type="submit"]');
+    try {
+      if (btn) btn.disabled = true;
+      const game = {
+        ...( $("game_id").value ? { id: $("game_id").value } : {} ),
+        game_date: $("game_date").value,
+        game_time: $("game_time").value.trim(),
+        event: $("game_event").value.trim(),
+        opponent: $("game_opponent").value.trim(),
+        location: $("game_location").value.trim(),
+        result: $("game_result").value.trim(),
+      };
+      await saveGame(game);
+      $("game-form").reset(); $("game_id").value = "";
+      gmsg.textContent = "Saved.";
+      await refreshGames();
+    } catch (err) {
+      gmsg.className = "error"; gmsg.textContent = err.message;
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  });
+
+  await refreshGames();
+}

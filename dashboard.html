@@ -13,6 +13,22 @@
     <button class="btn" id="logout" style="margin-left:auto; background:var(--panel-2); color:var(--gold)">Log Out</button>
   </header>
   <main class="wrap">
+    <section id="admin-schedule" class="panel" hidden style="margin-bottom:18px">
+      <h2 class="panel-title">Team Schedule (Admin)</h2>
+      <p class="notice">Add or edit games/tournaments. These appear on the public Schedule page.</p>
+      <div id="games-list"></div>
+      <form id="game-form" style="display:flex;flex-direction:column;margin-top:10px">
+        <input type="hidden" id="game_id">
+        <div class="field"><label>Date</label><input id="game_date" type="date" required></div>
+        <div class="field"><label>Time</label><input id="game_time" placeholder="1:30 PM"></div>
+        <div class="field"><label>Event / tournament</label><input id="game_event" placeholder="College Showcase"></div>
+        <div class="field"><label>Opponent</label><input id="game_opponent" placeholder="Buzz Gold 16U"></div>
+        <div class="field"><label>Location</label><input id="game_location" placeholder="Parsons Ranch, Clifton TX"></div>
+        <div class="field"><label>Result <span class="field-hint">e.g. W 7-3 — leave blank for upcoming</span></label><input id="game_result"></div>
+        <button class="btn" type="submit">Save Game</button>
+        <p id="game-msg"></p>
+      </form>
+    </section>
     <h1 class="player-name"><span class="fn">My</span> <span class="ln">Players</span></h1>
     <p class="notice">Your player appears on the public roster as soon as you save.</p>
     <div id="mine"></div>

@@ -53,6 +53,34 @@ export async function deletePlayer(id) {
   if (error) throw error;
 }
 
+// --- Team schedule ---
+export async function listGames() {
+  const { data, error } = await supabase
+    .from("games").select("*").order("game_date", { ascending: true });
+  if (error) throw error;
+  return data ?? [];
+}
+
+export async function isAdmin() {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return false;
+  const { data, error } = await supabase
+    .from("admins").select("user_id").eq("user_id", user.id).maybeSingle();
+  if (error) return false;
+  return !!data;
+}
+
+export async function saveGame(game) {
+  const { data, error } = await supabase.from("games").upsert(game).select().single();
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteGame(id) {
+  const { error } = await supabase.from("games").delete().eq("id", id);
+  if (error) throw error;
+}
+
 export const signUp = (email, password) => supabase.auth.signUp({ email, password });
 export const signIn = (email, password) => supabase.auth.signInWithPassword({ email, password });
 export const signOut = () => supabase.auth.signOut();
