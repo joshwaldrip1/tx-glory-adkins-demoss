@@ -41,7 +41,7 @@ export async function savePlayer(player) {
 export async function uploadPhoto(playerId, file) {
   const path = `${playerId}/photo.jpg`;
   const { error } = await supabase.storage
-    .from("player-photos").upload(path, file, { upsert: true, contentType: file.type });
+    .from("player-photos").upload(path, file, { upsert: true, contentType: file.type, cacheControl: "60" });
   if (error) throw error;
   return path;
 }

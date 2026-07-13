@@ -19,9 +19,13 @@ export function isCatcher(positions) {
   return Array.isArray(positions) && positions.includes("C");
 }
 
-export function photoUrl(path, baseUrl) {
+export function photoUrl(path, baseUrl, version) {
   if (!path) return "assets/team/player-placeholder.png";
-  return `${baseUrl}/storage/v1/object/public/player-photos/${path}`;
+  const url = `${baseUrl}/storage/v1/object/public/player-photos/${path}`;
+  // Cache-bust: the photo lives at a fixed path, so without a changing query
+  // param browsers/CDN serve the stale image after a re-upload. `version`
+  // (the player's updated_at) changes on every save.
+  return version ? `${url}?v=${encodeURIComponent(version)}` : url;
 }
 
 export function youTubeEmbed(url) {

@@ -170,7 +170,7 @@ function contactRow(p) {
 }
 
 export function playerCard(p, baseUrl) {
-  const img = photoUrl(p.photo_path, baseUrl);
+  const img = photoUrl(p.photo_path, baseUrl, p.updated_at);
   const pos = (p.positions || []).map(esc).join("/");
   return `<a class="card" href="player.html?id=${encodeURIComponent(p.id)}">
     <img class="card-photo" src="${esc(img)}" alt="${esc(p.first_name)} ${esc(p.last_name)}" loading="lazy">
@@ -183,7 +183,7 @@ export function playerCard(p, baseUrl) {
 }
 
 export function profile(p, baseUrl, teamLogo) {
-  const img = photoUrl(p.photo_path, baseUrl);
+  const img = photoUrl(p.photo_path, baseUrl, p.updated_at);
   const positions = (p.positions || []).map(esc).join(" · ");
   const posPill = positions ? `<span class="pos-pill">${positions}</span>` : "";
   const cls = text(p.grad_year) ? `<span class="pos-meta">Class of ${esc(p.grad_year)}</span>` : "";

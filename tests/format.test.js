@@ -42,6 +42,10 @@ describe("photoUrl", () => {
   it("falls back to placeholder", () => {
     expect(photoUrl("", "https://x.supabase.co")).toBe("assets/team/player-placeholder.png");
   });
+  it("appends a cache-busting version when provided", () => {
+    expect(photoUrl("maddie/photo.jpg", "https://x.supabase.co", "2026-07-13T05:00:00Z"))
+      .toBe("https://x.supabase.co/storage/v1/object/public/player-photos/maddie/photo.jpg?v=2026-07-13T05%3A00%3A00Z");
+  });
 });
 
 describe("youTubeEmbed", () => {
