@@ -93,10 +93,18 @@ function playerInfo(p) {
     statTile("Throws", text(bt[1]).trim()) +
     statTile("GPA", p.gpa) +
     statTile("Grad Year", p.grad_year);
+  const b = p.bio || {};
   const rows =
     infoRow("Positions", (p.positions || []).join(" / ")) +
+    infoRow("Commitment", b.commitment) +
+    infoRow("Bat / Glove / Throws", b.bat_glove) +
     infoRow("Hometown", p.hometown) +
-    infoRow("School", p.school);
+    infoRow("School", p.school) +
+    infoRow("Travel Org", b.travel_org) +
+    infoRow("HS / Travel Coach", b.hs_coach) +
+    infoRow("NCSA ID", b.ncsa_id) +
+    infoRow("SportsRecruits ID", b.sportsrecruits_id) +
+    infoRow("GameChanger ID", b.gamechanger_id);
   if (!tiles && !rows) return "";
   return `<section class="panel info-panel">
     <div class="info-top">

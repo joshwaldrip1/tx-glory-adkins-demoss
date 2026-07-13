@@ -93,7 +93,10 @@ function loadInto(p) {
     $(k).value = p[k] ?? "";
   }
   $("positions").value = (p.positions ?? []).join(",");
-  $("about").value = p.bio?.about ?? "";
+  const b = p.bio || {};
+  for (const k of ["about","commitment","bat_glove","travel_org","hs_coach","ncsa_id","sportsrecruits_id","gamechanger_id"]) {
+    $(k).value = b[k] ?? "";
+  }
   $("honor_roll").value = p.academics?.honor_roll ?? "";
   $("awards").value = (p.academics?.awards ?? []).join(", ");
   $("interests").value = (p.academics?.interests ?? []).join(", ");
@@ -127,7 +130,16 @@ $("form").addEventListener("submit", async (e) => {
       hometown: $("hometown").value.trim(),
       school: $("school").value.trim(),
       gpa: $("gpa").value ? Number($("gpa").value) : null,
-      bio: { about: $("about").value.trim() },
+      bio: {
+        about: $("about").value.trim(),
+        commitment: $("commitment").value.trim(),
+        bat_glove: $("bat_glove").value.trim(),
+        travel_org: $("travel_org").value.trim(),
+        hs_coach: $("hs_coach").value.trim(),
+        ncsa_id: $("ncsa_id").value.trim(),
+        sportsrecruits_id: $("sportsrecruits_id").value.trim(),
+        gamechanger_id: $("gamechanger_id").value.trim(),
+      },
       academics: {
         honor_roll: $("honor_roll").value.trim(),
         awards: splitList($("awards").value),
