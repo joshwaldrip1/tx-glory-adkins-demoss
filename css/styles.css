@@ -1,0 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;600&display=swap");
+
+:root {
+  --bg:#0E0E0E; --panel:#1A1A1A; --panel-2:#232323;
+  --gold:#C9A24B; --gold-hi:#E7C66B; --text:#F5F5F5; --muted:#A8A8A8; --line:#333333;
+  --display: "Oswald", system-ui, sans-serif;
+  --body: "Inter", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body {
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:var(--body); line-height:1.4;
+}
+a { color:var(--gold-hi); }
+.wrap { max-width:1100px; margin:0 auto; padding:16px; }
+
+/* Top bar */
+.topbar { display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--line); }
+.topbar img { height:44px; }
+.topbar .name { font-family:var(--display); text-transform:uppercase; letter-spacing:1px; color:var(--gold); font-size:1.2rem; }
+
+/* Name treatment */
+.player-name { font-family:var(--display); text-transform:uppercase; font-weight:700; line-height:.95; margin:.2em 0; font-size:clamp(2rem,6vw,3.4rem); }
+.player-name .fn { color:var(--text); }
+.player-name .ln { color:var(--gold); }
+.jersey { font-family:var(--display); color:var(--gold); font-size:1.4rem; }
+.classyear { color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin:0; }
+
+/* Roster grid */
+.roster-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
+.card { display:block; background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; text-decoration:none; color:var(--text); transition:border-color .15s; }
+.card:hover { border-color:var(--gold); }
+.card-photo { width:100%; aspect-ratio:3/4; object-fit:cover; display:block; }
+.card-body { padding:10px 12px; display:flex; flex-direction:column; gap:2px; }
+.card-num { font-family:var(--display); color:var(--gold); }
+.card-name { font-family:var(--display); text-transform:uppercase; font-size:1.15rem; }
+.card-name .ln { color:var(--gold); }
+.card-meta { color:var(--muted); font-size:.85rem; }
+
+/* Profile */
+.profile { max-width:900px; margin:0 auto; }
+.profile-head { display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end; padding:16px 0; }
+.profile-photo { width:min(320px,80vw); aspect-ratio:3/4; object-fit:cover; border-radius:12px; border:1px solid var(--line); }
+
+/* Panels + tiles */
+.panel { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px; margin:16px 0; }
+.panel-title { font-family:var(--display); text-transform:uppercase; letter-spacing:1px; color:var(--gold); margin:0 0 12px; font-size:1.1rem; }
+.panel-body { }
+.tile, .info-row { }
+.panel-body { display:flex; flex-wrap:wrap; gap:14px 22px; }
+.tile { display:flex; flex-direction:column; min-width:64px; }
+.tile-num { font-family:var(--display); font-size:1.6rem; }
+.tile-label { color:var(--muted); text-transform:uppercase; font-size:.7rem; letter-spacing:1px; }
+.info-row { display:flex; gap:8px; width:100%; }
+.info-label { color:var(--gold); text-transform:uppercase; font-size:.75rem; letter-spacing:1px; min-width:110px; }
+.info-value { color:var(--text); }
+.stars { list-style:none; padding:0; margin:0; }
+.stars li::before { content:"★ "; color:var(--gold); }
+
+/* Video + buttons */
+.video { position:relative; width:100%; aspect-ratio:16/9; margin:16px 0; }
+.video iframe { position:absolute; inset:0; width:100%; height:100%; border:0; border-radius:12px; }
+.btn { display:inline-block; background:var(--gold); color:#111; font-weight:700; text-decoration:none; padding:10px 16px; border-radius:8px; border:0; cursor:pointer; }
+.btn:hover { background:var(--gold-hi); }
+
+/* Forms */
+.field { display:flex; flex-direction:column; gap:4px; margin:10px 0; }
+.field label { color:var(--gold); text-transform:uppercase; font-size:.75rem; letter-spacing:1px; }
+.field input, .field textarea, .field select { background:var(--panel-2); border:1px solid var(--line); color:var(--text); padding:10px; border-radius:8px; font:inherit; }
+.error { color:#ff8b8b; }
+.notice { color:var(--gold-hi); }
+
+.tagline { text-align:center; font-family:var(--display); text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin:24px 0; }
+
+@media (max-width:520px) {
+  .info-label { min-width:90px; }
+}

@@ -8,3 +8,6 @@ assets/reference/
 # OS / editor cruft
 Thumbs.db
 .DS_Store
+
+# Node modules
+node_modules/
