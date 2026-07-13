@@ -14,6 +14,8 @@ export const TEAM = {
   // Supported platforms: facebook, instagram, x, tiktok, youtube, gamechanger, website.
   socials: [
     { platform: "facebook", url: "https://www.facebook.com/profile.php?id=61590009645569" },
+    { platform: "instagram", url: "https://instagram.com/gloryadkins_demoss" },
+    { platform: "x", url: "https://x.com/GloryDemoss" },
     { platform: "gamechanger", url: "https://web.gc.com/teams/0CKO9tpzs7sc/2026-summer-tga-demoss-18u-18u" },
   ],
   // "In the News" banners on the roster page. Add more as { source, title, url }.
