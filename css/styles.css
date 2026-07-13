@@ -50,9 +50,9 @@ a { color:var(--gold-hi); }
 .player-name .fn { color:var(--text); display:block; font-size:clamp(2.6rem,8vw,5.2rem); text-shadow:0 3px 16px rgba(0,0,0,.7); }
 .player-name .ln { color:var(--gold); display:block; font-size:clamp(2.6rem,8vw,5.2rem); text-shadow:0 3px 16px rgba(0,0,0,.7); }
 .pos-row { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:14px; }
-.pos-pill { background:var(--gold); color:#111; font-family:var(--display); font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:5px 16px; transform:skewX(-7deg); }
+.pos-pill { background:var(--gold); color:#111; font-family:var(--display); font-weight:700; text-transform:uppercase; letter-spacing:1.5px; font-size:1.6rem; padding:8px 24px; transform:skewX(-7deg); }
 .pos-pill, .pos-meta { display:inline-block; }
-.pos-meta { color:var(--text); font-family:var(--display); font-weight:600; text-transform:uppercase; letter-spacing:2px; }
+.pos-meta { color:var(--text); font-family:var(--display); font-weight:600; text-transform:uppercase; letter-spacing:2px; font-size:1.15rem; }
 .hero-sub { color:var(--muted); text-transform:uppercase; letter-spacing:1px; font-size:.9rem; margin:10px 0 0; }
 .hero-brand { display:flex; align-items:center; gap:18px; flex:1 1 auto; min-width:0; }
 .jersey { font-family:var(--impact); color:var(--gold); font-size:clamp(2.6rem,8vw,4.6rem); line-height:.9; transform:skewX(-7deg); text-shadow:0 3px 14px rgba(0,0,0,.6); flex:0 0 auto; }
@@ -104,10 +104,15 @@ a { color:var(--gold-hi); }
 /* ---------- Two-column (academics / interests / contact) ---------- */
 .two-col { display:grid; grid-template-columns:1fr; gap:16px; margin-top:14px; }
 @media (min-width:760px){ .two-col{ grid-template-columns:1fr 1fr; } }
-.contact-panel { display:flex; flex-wrap:wrap; justify-content:center; gap:14px 44px; }
+.contact-panel { display:flex; flex-wrap:wrap; justify-content:center; gap:24px 70px; }
+.contact-block-title { display:block; text-align:center; color:var(--gold); font-family:var(--display); text-transform:uppercase; letter-spacing:2px; font-weight:700; margin-bottom:12px; }
+.contact-items { display:flex; flex-direction:column; gap:12px; }
 .contact-item { display:flex; align-items:center; gap:12px; }
 .contact-item span { color:var(--text); font-weight:600; }
 .contact-icon { height:30px; width:auto; flex:0 0 auto; }
+
+.about-me { padding-top:10px; }
+.about-me p { margin:5px 0 0; color:var(--text); font-weight:400; line-height:1.5; }
 
 /* ---------- Video + buttons ---------- */
 .video { position:relative; width:100%; aspect-ratio:16/9; margin:18px 0; }

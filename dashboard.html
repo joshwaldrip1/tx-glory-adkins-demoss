@@ -30,6 +30,9 @@
         <div class="field"><label>Hometown</label><input id="hometown" placeholder="Mildred, TX"></div>
         <div class="field"><label>School</label><input id="school"></div>
         <div class="field"><label>Short bio / tagline <span class="field-hint">shown under the name</span></label><input id="about" placeholder="13U competing on a 16U showcase team"></div>
+        <div class="field"><label>Date of birth <span class="field-hint">MM/DD/YYYY</span></label><input id="dob" placeholder="MM/DD/YYYY"></div>
+        <div class="field"><label>Current team(s)</label><input id="current_teams" placeholder="TX Glory Adkins DeMoss"></div>
+        <div class="field"><label>About me</label><textarea id="about_me" rows="3" placeholder="A short paragraph about the player"></textarea></div>
         <div class="field"><label>Commitment <span class="field-hint">e.g. Uncommitted, or Committed – XYZ University</span></label><input id="commitment" placeholder="Uncommitted"></div>
         <div class="field"><label>Bat / Glove / Throws detail <span class="field-hint">e.g. RHT / LHB, -10 bat</span></label><input id="bat_glove"></div>
         <div class="field"><label>Travel organization</label><input id="travel_org" placeholder="TX Glory Adkins DeMoss"></div>
@@ -46,11 +49,15 @@
         <div class="field"><label>Academic awards <span class="field-hint">comma separated</span></label><input id="awards" placeholder="Mathematics Award, Honor Roll"></div>
         <div class="field"><label>Athletic awards / achievements <span class="field-hint">comma separated</span></label><input id="achievements" placeholder="USSSA All-State, Silver Slugger"></div>
         <div class="field"><label>Academic interests <span class="field-hint">comma separated</span></label><input id="interests" placeholder="Nursing, Business"></div>
-        <h3 class="panel-title" style="margin-top:18px">Media &amp; Contact</h3>
+        <h3 class="panel-title" style="margin-top:18px">Media</h3>
         <div class="field"><label>Highlight video URL (YouTube/Hudl)</label><input id="video_url"></div>
-        <div class="field"><label>Guardian name</label><input id="guardian_name" required></div>
-        <div class="field"><label>Guardian email</label><input id="guardian_email" type="email" required></div>
-        <div class="field"><label>Guardian phone</label><input id="guardian_phone"></div>
+        <h3 class="panel-title" style="margin-top:18px">Player Contact</h3>
+        <div class="field"><label>Player email</label><input id="player_email" type="email"></div>
+        <div class="field"><label>Player phone</label><input id="player_phone"></div>
+        <h3 class="panel-title" style="margin-top:18px">Parent Contact</h3>
+        <div class="field"><label>Parent / guardian name</label><input id="guardian_name" required></div>
+        <div class="field"><label>Parent email</label><input id="guardian_email" type="email" required></div>
+        <div class="field"><label>Parent phone</label><input id="guardian_phone"></div>
         <div class="field"><label>Player photo</label><input id="photo" type="file" accept="image/*"></div>
         <button class="btn" type="submit">Save &amp; Publish</button>
         <p id="msg"></p>

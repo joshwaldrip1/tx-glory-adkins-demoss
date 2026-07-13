@@ -94,7 +94,7 @@ function loadInto(p) {
   }
   $("positions").value = (p.positions ?? []).join(",");
   const b = p.bio || {};
-  for (const k of ["about","commitment","bat_glove","travel_org","hs_coach","ncsa_id","sportsrecruits_id","gamechanger_id"]) {
+  for (const k of ["about","dob","current_teams","about_me","player_email","player_phone","commitment","bat_glove","travel_org","hs_coach","ncsa_id","sportsrecruits_id","gamechanger_id"]) {
     $(k).value = b[k] ?? "";
   }
   $("honor_roll").value = p.academics?.honor_roll ?? "";
@@ -132,6 +132,11 @@ $("form").addEventListener("submit", async (e) => {
       gpa: $("gpa").value ? Number($("gpa").value) : null,
       bio: {
         about: $("about").value.trim(),
+        dob: $("dob").value.trim(),
+        current_teams: $("current_teams").value.trim(),
+        about_me: $("about_me").value.trim(),
+        player_email: $("player_email").value.trim(),
+        player_phone: $("player_phone").value.trim(),
         commitment: $("commitment").value.trim(),
         bat_glove: $("bat_glove").value.trim(),
         travel_org: $("travel_org").value.trim(),

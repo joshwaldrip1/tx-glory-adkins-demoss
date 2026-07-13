@@ -95,6 +95,8 @@ function playerInfo(p) {
     statTile("Grad Year", p.grad_year);
   const b = p.bio || {};
   const rows =
+    infoRow("D.O.B.", b.dob) +
+    infoRow("Current Team(s)", b.current_teams) +
     infoRow("Commitment", b.commitment) +
     infoRow("Bat / Glove / Throws", b.bat_glove) +
     infoRow("Hometown", p.hometown) +
@@ -104,13 +106,17 @@ function playerInfo(p) {
     infoRow("NCSA ID", b.ncsa_id) +
     infoRow("SportsRecruits ID", b.sportsrecruits_id) +
     infoRow("GameChanger ID", b.gamechanger_id);
-  if (!tiles && !rows) return "";
+  const aboutMe = text(b.about_me)
+    ? `<div class="about-me"><span class="info-label">About Me</span><p>${esc(b.about_me)}</p></div>`
+    : "";
+  const bottom = rows + aboutMe;
+  if (!tiles && !bottom) return "";
   return `<section class="panel info-panel">
     <div class="info-top">
       ${ribbon("playerinfo", "Player Information")}
       <div class="card-tiles">${tiles}</div>
     </div>
-    ${rows ? `<div class="info-bottom">${rows}</div>` : ""}
+    ${bottom ? `<div class="info-bottom">${bottom}</div>` : ""}
   </section>`;
 }
 
@@ -144,11 +150,21 @@ function contactItem(iconKey, lines) {
   return `<div class="contact-item"><img class="contact-icon" src="${ART}icon-${iconKey}.png" alt=""><span>${vals.map(esc).join("<br>")}</span></div>`;
 }
 
+function contactBlock(title, itemsHtml) {
+  if (!itemsHtml) return "";
+  return `<div class="contact-block"><span class="contact-block-title">${esc(title)}</span><div class="contact-items">${itemsHtml}</div></div>`;
+}
+
 function contactRow(p) {
-  const inner =
+  const b = p.bio || {};
+  const player = contactBlock("Player",
+    contactItem("email", [b.player_email]) +
+    contactItem("phone", [b.player_phone]));
+  const parent = contactBlock("Parent",
     contactItem("email", [p.guardian_name, p.guardian_email]) +
     contactItem("phone", [p.guardian_phone]) +
-    contactItem("location", [p.hometown]);
+    contactItem("location", [p.hometown]));
+  const inner = player + parent;
   if (!inner) return "";
   return `${ribbon("contact", "Contact Information")}<section class="panel contact-panel">${inner}</section>`;
 }
