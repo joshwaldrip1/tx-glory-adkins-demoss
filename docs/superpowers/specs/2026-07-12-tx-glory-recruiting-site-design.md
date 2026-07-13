@@ -51,7 +51,7 @@ Two halves:
 | `id` | uuid | primary key, default `gen_random_uuid()` |
 | `owner_id` | uuid | FK → `auth.users`; a parent may own more than one player |
 | `first_name` | text | displayed white in the name treatment |
-| `last_name` | text | displayed gold; public roster may abbreviate to last initial (see privacy) |
+| `last_name` | text | displayed gold; shown in full publicly (family-approved, matches flyers) |
 | `jersey_number` | int | large corner display (e.g. #15) |
 | `grad_year` | int | "Class of ____"; signals age without publishing DOB |
 | `positions` | text[] | primary first, e.g. `{P,3B}` — drives which stat sections render |
