@@ -66,12 +66,19 @@ async function refresh() {
     b.addEventListener("click", () => loadInto(players.find((p) => p.id === b.dataset.edit))));
 }
 
+const splitList = (v) => v.split(",").map((s) => s.trim()).filter(Boolean);
+
 function loadInto(p) {
   $("id").value = p.id;
-  for (const k of ["first_name","last_name","jersey_number","grad_year","bats_throws","height","video_url","guardian_name","guardian_email","guardian_phone"]) {
+  for (const k of ["first_name","last_name","jersey_number","grad_year","bats_throws","height","weight","hometown","school","gpa","video_url","guardian_name","guardian_email","guardian_phone"]) {
     $(k).value = p[k] ?? "";
   }
   $("positions").value = (p.positions ?? []).join(",");
+  $("about").value = p.bio?.about ?? "";
+  $("honor_roll").value = p.academics?.honor_roll ?? "";
+  $("awards").value = (p.academics?.awards ?? []).join(", ");
+  $("interests").value = (p.academics?.interests ?? []).join(", ");
+  $("achievements").value = (p.achievements ?? []).join(", ");
   const st = p.stats || {};
   statInputs().forEach((el) => {
     el.value = st[el.dataset.group]?.[el.dataset.slug] ?? "";
@@ -97,6 +104,17 @@ $("form").addEventListener("submit", async (e) => {
       positions,
       bats_throws: $("bats_throws").value.trim(),
       height: $("height").value.trim(),
+      weight: $("weight").value.trim(),
+      hometown: $("hometown").value.trim(),
+      school: $("school").value.trim(),
+      gpa: $("gpa").value ? Number($("gpa").value) : null,
+      bio: { about: $("about").value.trim() },
+      academics: {
+        honor_roll: $("honor_roll").value.trim(),
+        awards: splitList($("awards").value),
+        interests: splitList($("interests").value),
+      },
+      achievements: splitList($("achievements").value),
       stats: collectStats(),
       video_url: $("video_url").value.trim(),
       guardian_name: $("guardian_name").value.trim(),

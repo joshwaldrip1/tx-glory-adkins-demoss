@@ -22,7 +22,7 @@ export function slugStat(label) {
 export const STAT_GROUPS = [
   {
     key: "batting",
-    title: "Offensive / Batting",
+    title: "Batting",
     stats: [
       { label: "PA", name: "Plate appearances", core: true },
       { label: "AB", name: "At bats", core: true },
@@ -175,7 +175,7 @@ export const STAT_GROUPS = [
   },
   {
     key: "innings",
-    title: "Innings Played (by position)",
+    title: "Innings Played",
     stats: [
       { label: "P", name: "Innings at pitcher", core: true },
       { label: "C", name: "Innings at catcher", core: true },

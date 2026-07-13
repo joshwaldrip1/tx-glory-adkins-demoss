@@ -45,7 +45,7 @@ describe("playerCard", () => {
 describe("profile", () => {
   it("shows only the groups the player has data for", () => {
     const html = profile(pitcher, BASE);
-    expect(html).toContain("Offensive / Batting");
+    expect(html).toContain("Batting");
     expect(html).toContain(".386");
     expect(html).toContain("Pitching");
     expect(html).toContain("55 mph");
@@ -64,7 +64,7 @@ describe("profile", () => {
   });
   it("omits every stat group except the one with data", () => {
     const html = profile(minimalInfielder, BASE);
-    expect(html).toContain("Offensive / Batting"); // has avg
+    expect(html).toContain("Batting"); // has avg
     expect(html).toContain(".300");
     expect(html).not.toContain("Pitching");
     expect(html).not.toContain("Catching");
