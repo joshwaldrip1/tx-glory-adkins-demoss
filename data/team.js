@@ -7,7 +7,7 @@ export const TEAM = {
   logo: "assets/team/glory-gold.png",
   coach: {
     name: "Billy DeMoss",
-    email: "josh_waldrip@yahoo.com",
+    email: "Glorydemoss@outlook.com",
     phone: "903-229-1101",
   },
 };
