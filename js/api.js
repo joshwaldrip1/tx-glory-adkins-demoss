@@ -46,6 +46,13 @@ export async function uploadPhoto(playerId, file) {
   return path;
 }
 
+export async function deletePlayer(id) {
+  // Best-effort photo cleanup (ignore if none); RLS lets an owner delete only their own row.
+  await supabase.storage.from("player-photos").remove([`${id}/photo.jpg`]);
+  const { error } = await supabase.from("players").delete().eq("id", id);
+  if (error) throw error;
+}
+
 export const signUp = (email, password) => supabase.auth.signUp({ email, password });
 export const signIn = (email, password) => supabase.auth.signInWithPassword({ email, password });
 export const signOut = () => supabase.auth.signOut();

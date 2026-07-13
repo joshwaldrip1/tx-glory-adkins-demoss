@@ -1,4 +1,4 @@
-import { listMine, savePlayer, uploadPhoto, signOut, currentUser } from "./api.js";
+import { listMine, savePlayer, uploadPhoto, deletePlayer, signOut, currentUser } from "./api.js";
 import { esc } from "./render.js";
 import { STAT_GROUPS, slugStat } from "../data/stat-catalog.js";
 
@@ -60,10 +60,29 @@ async function refresh() {
     ? players.map((p) =>
         `<div class="info-row"><span class="info-value">#${esc(p.jersey_number ?? "")} ${esc(p.first_name)} ${esc(p.last_name)}
          — <em>${esc(p.status)}</em></span>
-         <button class="btn" data-edit="${esc(p.id)}" style="margin-left:auto">Edit</button></div>`).join("")
+         <span class="row-actions">
+           <button class="btn" data-edit="${esc(p.id)}">Edit</button>
+           <button class="btn btn-danger" data-del="${esc(p.id)}">Delete</button>
+         </span></div>`).join("")
     : `<p class="notice">No players yet — add one below.</p>`;
   document.querySelectorAll("[data-edit]").forEach((b) =>
     b.addEventListener("click", () => loadInto(players.find((p) => p.id === b.dataset.edit))));
+  document.querySelectorAll("[data-del]").forEach((b) =>
+    b.addEventListener("click", async () => {
+      const p = players.find((x) => x.id === b.dataset.del);
+      if (!p) return;
+      if (!confirm(`Delete ${p.first_name} ${p.last_name}? This permanently removes their profile and cannot be undone.`)) return;
+      b.disabled = true;
+      msg.className = "notice"; msg.textContent = "Deleting…";
+      try {
+        await deletePlayer(p.id);
+        if ($("id").value === p.id) { $("form").reset(); $("id").value = ""; }
+        msg.textContent = `Deleted ${p.first_name} ${p.last_name}.`;
+        await refresh();
+      } catch (e) {
+        msg.className = "error"; msg.textContent = e.message; b.disabled = false;
+      }
+    }));
 }
 
 const splitList = (v) => v.split(",").map((s) => s.trim()).filter(Boolean);
