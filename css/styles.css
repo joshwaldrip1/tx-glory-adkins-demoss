@@ -151,12 +151,13 @@ a { color:var(--gold-hi); }
 .side-ad-name { display:block; margin-top:8px; color:#4a2d6b; font-weight:700; font-size:.82rem; }
 @media (max-width:760px){
   .layout { flex-direction:column; padding:0 12px; }
-  .sidebar { position:static; flex:auto; width:100%; padding-top:12px; }
+  .layout .wrap { order:1; padding-top:6px; }         /* roster first */
+  .sidebar { order:2; position:static; flex:auto; width:100%; padding-top:16px; }  /* nav + ad below */
   .side-nav { flex-direction:row; flex-wrap:wrap; }
   .side-link { flex:1 1 auto; justify-content:center; }
-  .side-ad { max-width:200px; margin:14px auto 0; }
-  .side-ad img { max-width:110px; }
-  .layout .wrap { padding-top:6px; }
+  .side-ad { max-width:160px; margin:14px auto 0; padding:9px 8px 7px; }
+  .side-ad img { max-width:92px; }
+  .side-ad-name { font-size:.75rem; }
 }
 
 /* Schedule */
