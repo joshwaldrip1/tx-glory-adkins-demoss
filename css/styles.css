@@ -72,8 +72,10 @@ a { color:var(--gold-hi); }
 .ribbon span > * { display:inline-block; transform:skewX(9deg); }
 
 /* ---------- Info + photo ---------- */
-.info-photo { display:grid; grid-template-columns:1fr; gap:16px; align-items:start; }
+.info-photo { display:grid; grid-template-columns:1fr; gap:16px; align-items:stretch; }
 @media (min-width:760px){ .info-photo{ grid-template-columns:1.35fr 1fr; } }
+.info-panel { display:flex; flex-direction:column; justify-content:space-between; }
+.info-panel .card-tiles { margin:8px 0 16px; }
 .photo-box { border:2px solid var(--gold); border-radius:14px; padding:6px; background:#0e0e0e; box-shadow:0 12px 34px rgba(0,0,0,.5); }
 .profile-photo { display:block; width:100%; aspect-ratio:3/4; height:auto; object-fit:cover; border-radius:9px; }
 

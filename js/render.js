@@ -94,9 +94,11 @@ function playerInfo(p) {
   const rows = infoRow("Hometown", p.hometown) + infoRow("School", p.school);
   if (!tiles && !rows) return "";
   return `<section class="panel info-panel">
-    ${ribbon("playerinfo", "Player Information")}
-    <div class="card-tiles">${tiles}</div>
-    ${rows}
+    <div class="info-top">
+      ${ribbon("playerinfo", "Player Information")}
+      <div class="card-tiles">${tiles}</div>
+    </div>
+    ${rows ? `<div class="info-bottom">${rows}</div>` : ""}
   </section>`;
 }
 
