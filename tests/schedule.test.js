@@ -1,5 +1,15 @@
 import { describe, it, expect } from "vitest";
-import { formatGameDate, splitGames, gameCard, todayISO } from "../js/schedule.js";
+import { formatGameDate, splitGames, gameCard, todayISO, timeMinutes } from "../js/schedule.js";
+
+describe("timeMinutes", () => {
+  it("parses 12-hour times to minutes of day", () => {
+    expect(timeMinutes("12:40 PM")).toBe(760);
+    expect(timeMinutes("1:50 PM")).toBe(830);
+    expect(timeMinutes("12:00 AM")).toBe(0);
+    expect(timeMinutes("9:05 AM")).toBe(545);
+    expect(timeMinutes("")).toBe(-1);
+  });
+});
 
 describe("formatGameDate", () => {
   it("formats ISO dates", () => {
@@ -26,6 +36,13 @@ describe("splitGames", () => {
   });
   it("ignores games without a date", () => {
     expect(splitGames([{ event: "x" }], "2026-07-10").upcoming).toEqual([]);
+  });
+  it("orders same-day upcoming games by time of day, not text", () => {
+    const sameDay = [
+      { game_date: "2026-07-18", game_time: "1:50 PM", opponent: "Later" },
+      { game_date: "2026-07-18", game_time: "12:40 PM", opponent: "Earlier" },
+    ];
+    expect(splitGames(sameDay, "2026-07-16").upcoming.map((g) => g.opponent)).toEqual(["Earlier", "Later"]);
   });
 });
 
