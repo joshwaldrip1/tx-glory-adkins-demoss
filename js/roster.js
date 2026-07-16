@@ -1,7 +1,8 @@
 import { TEAM } from "../data/team.js";
-import { listApproved } from "./api.js";
+import { listApproved, listGames } from "./api.js";
 import { playerCard, esc } from "./render.js";
 import { SUPABASE_URL } from "./config.js";
+import { splitGames, todayISO, formatGameDate } from "./schedule.js";
 
 document.getElementById("team-name").textContent = TEAM.shortName;
 document.getElementById("tagline").textContent = `${TEAM.taglinePrimary} — ${TEAM.taglineSecondary}`;
@@ -56,4 +57,23 @@ try {
 } catch (e) {
   console.error(e);
   grid.innerHTML = `<p class="error">Could not load the roster right now. Please try again later.</p>`;
+}
+
+// Upcoming games in the sidebar (earliest → latest); hidden when there are none.
+try {
+  const { upcoming } = splitGames(await listGames(), todayISO());
+  if (upcoming.length) {
+    document.getElementById("side-upcoming").innerHTML =
+      `<h3 class="side-title">Upcoming</h3>` +
+      upcoming.slice(0, 6).map((g) => {
+        const opp = [g.event, g.opponent].filter(Boolean).join(" — ") || "Game";
+        const time = g.game_time ? ` · ${esc(g.game_time)}` : "";
+        return `<a class="side-game" href="schedule.html">
+          <span class="sg-date">${esc(formatGameDate(g.game_date))}${time}</span>
+          <span class="sg-opp">${esc(opp)}</span>
+        </a>`;
+      }).join("");
+  }
+} catch (e) {
+  console.error(e);
 }
